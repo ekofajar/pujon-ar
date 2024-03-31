@@ -1,0 +1,148 @@
+<!doctype HTML>
+<html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<script src="https://github.com/AR-js-org/AR.js/releases/download/3.4.5/ar.js"></script>
+<script src="https://github.com/AR-js-org/AR.js/releases/download/3.4.5/aframe-ar.js"></script>
+<body style="margin: 0px; overflow: hidden;">
+
+<script>
+
+let markerVisible = { m0: false, m1: false };
+
+AFRAME.registerComponent('registerevents', {
+    init: function () 
+    {
+        let marker = this.el;
+        
+        //marker.addEventListener('markerFound', function() {
+        //    markerVisible[ marker.id ] = true;
+        //});
+        //marker.addEventListener('markerLost', function() {
+        //    markerVisible[ marker.id ] = false;
+        //});
+    }
+});
+
+AFRAME.registerComponent('run', {
+    init: function()
+    {
+
+        alt = 10;
+
+        lat0 = -6.383790475805914;
+        lon0 = 106.82338669755005;
+
+        lat1 =  -6.385571078642297;
+        lon1 =  106.8217632905531;
+
+        lat_diff = lat0 - lat1;
+        lon_diff = lon0 - lon1;
+
+        //border0_lat = 
+
+        //this.m0 = document.querySelector("#m0");
+        //this.m1 = document.querySelector("#m1");
+        this.p0 = new THREE.Vector3();
+        this.p1 = new THREE.Vector3(); 
+
+        
+        this.geometry1 = new THREE.Geometry();
+        this.geometry1.vertices.push( new THREE.Vector3(lat0,lon0, alt) );
+        this.geometry1.vertices.push( new THREE.Vector3( lat1, lon1, alt) );
+
+        scene.add( this.centerline );
+
+        /*
+
+        this.geometry2 = new THREE.Geometry();
+        this.geometry2.vertices.push( new THREE.Vector3(-1,-1,-1) );
+        this.geometry2.vertices.push( new THREE.Vector3( 1, 1, 1) );
+
+        this.geometry3 = new THREE.Geometry();
+        this.geometry3.vertices.push( new THREE.Vector3(-1,-1,-1) );
+        this.geometry3.vertices.push( new THREE.Vector3( 1, 1, 1) );
+
+
+        this.material1 = new THREE.LineBasicMaterial( {color: 0xFF00FF} );
+        this.material2 = new THREE.LineBasicMaterial( {color: 0x00FF00} );
+        this.material3 = new THREE.LineBasicMaterial( {color: 0x0000FF} );
+
+        this.centerline = new THREE.Line( this.geometry1, this.material1 );
+        this.borderline1 = new THREE.Line( this.geometry2, this.material2 );
+        this.borderline2 = new THREE.Line( this.geometry3, this.material2 );
+
+        //let scene = document.querySelector('a-scene').object3D;
+
+        scene.add( this.borderline1 );
+        scene.add( this.borderline2 );
+        */
+    },
+    tick: function (time, deltaTime) 
+    {
+        this.centerline.visible = true;
+        
+        /*
+        if ( markerVisible["m0"] && markerVisible["m1"] )
+        {
+            this.m0.object3D.getWorldPosition(this.p0);
+            this.m1.object3D.getWorldPosition(this.p1);
+            this.geometry1.vertices[0] = this.p0;
+            this.geometry1.vertices[1] = this.p1;
+            this.geometry1.verticesNeedUpdate = true;
+            this.line1.visible = true;
+
+            this.m0.object3D.getWorldPosition(this.p0);
+            this.m1.object3D.getWorldPosition(this.p1);
+            
+            this.geometry2.vertices[0].x = this.p0.x + 0.1;
+            this.geometry2.vertices[0].y = this.p0.y + 0.1;
+            this.geometry2.vertices[0].z = this.p0.z + 0.1;
+            this.geometry2.vertices[1].x = this.p1.x + 0.1;
+            this.geometry2.vertices[1].y = this.p1.y + 0.1;
+            this.geometry2.vertices[1].z = this.p1.z + 0.1;
+
+            this.geometry2.verticesNeedUpdate = true;
+            this.line2.visible = true;
+
+            this.geometry3.vertices[0].x = this.p0.x - 0.1;
+            this.geometry3.vertices[0].y = this.p0.y - 0.1;
+            this.geometry3.vertices[0].z = this.p0.z - 0.1;
+            this.geometry3.vertices[1].x = this.p1.x - 0.1;
+            this.geometry3.vertices[1].y = this.p1.y - 0.1;
+            this.geometry3.vertices[1].z = this.p1.z - 0.1;
+
+            this.geometry3.verticesNeedUpdate = true;
+            this.line3.visible = true;
+        }
+        else
+        {
+            this.line1.visible = false;
+            this.line2.visible = false;
+            this.line3.visible = false;
+        }*/
+    }
+});
+
+</script>
+
+<a-scene embedded vr-mode-ui="enabled: false;" arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+    <a-marker type="barcode" value="0" id="m0" registerevents>
+        <a-plane position="0 0 0" 
+                 rotation="-90 0 0"
+                 material="color: white; transparent: true; opacity: 0.10;">
+        </a-plane>
+    </a-marker>
+
+    <a-marker type="barcode" value="1" id="m1" registerevents>
+        <a-plane position="0 0 0" 
+                 rotation="-90 0 0"
+                 material="color: white; transparent: true; opacity: 0.10;">
+        </a-plane>
+    </a-marker>
+    
+    <a-marker type="pattern" url="data/kanji.patt" id="baseMarker" ></a-marker>
+    <a-entity camera></a-entity>
+    <a-entity run></a-entity>
+</a-scene>
+</body>
+</html>
